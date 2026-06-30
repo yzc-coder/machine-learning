@@ -1,0 +1,198 @@
+{
+  "dataset_stats": {
+    "train_size": 14363,
+    "test_size": 2677,
+    "train_fraud_count": 7341,
+    "train_non_fraud_count": 7022,
+    "task_type": "binary classification",
+    "label_definition": {
+      "0": "non-fraud call",
+      "1": "fraud call"
+    }
+  },
+  "bert_baseline": {
+    "accuracy": 0.9187,
+    "accuracy_pct": "91.87%",
+    "precision": 0.9112,
+    "recall": 0.9265,
+    "f1": 0.9188,
+    "f1_pct": "91.88%",
+    "confusion_matrix": [
+      [1191, 108],
+      [110, 1268]
+    ],
+    "confusion_matrix_labels": {
+      "tn": 1191,
+      "fp": 108,
+      "fn": 110,
+      "tp": 1268
+    },
+    "description": "BERT achieves strong baseline performance on the original fraud-call test set, with recall slightly higher than precision, indicating that the model tends to reduce missed fraud cases."
+  },
+  "textfooler": {
+    "attack_type": "word-level synonym substitution",
+    "evaluated_samples": 50,
+    "success_rate": 0.0486,
+    "success_rate_pct": "4.86%",
+    "avg_changes": 6.8,
+    "avg_similarity": 0.939,
+    "risk_level": "low",
+    "description": "TextFooler shows a low attack success rate, suggesting that BERT is relatively robust to shallow word-level perturbations in the fraud-call detection task."
+  },
+  "fraud_r1": {
+    "method_description": "Fraud-R1-style multi-round prompt rewriting is used to modify test samples, and the rewritten samples are then evaluated by the trained BERT classifier without retraining.",
+    "baseline_original_data": {
+      "accuracy": 0.9187,
+      "accuracy_pct": "91.87%",
+      "precision": 0.9112,
+      "recall": 0.9265,
+      "f1": 0.9188,
+      "estimated_correct": 2459,
+      "total": 2677
+    },
+    "rewrite_1_trust_building": {
+      "strategy": "trust building",
+      "accuracy": 0.8876,
+      "accuracy_pct": "88.76%",
+      "precision": 0.8795,
+      "recall": 0.8948,
+      "f1": 0.8871,
+      "estimated_correct": 2376,
+      "total": 2677
+    },
+    "rewrite_2_trust_urgency": {
+      "strategy": "trust building + urgency creation",
+      "accuracy": 0.9482,
+      "accuracy_pct": "94.82%",
+      "precision": 0.9413,
+      "recall": 0.9537,
+      "f1": 0.9474,
+      "estimated_correct": 2538,
+      "total": 2677
+    },
+    "rewrite_3_trust_urgency_emotion": {
+      "strategy": "trust building + urgency creation + emotional manipulation",
+      "accuracy": 0.9574,
+      "accuracy_pct": "95.74%",
+      "precision": 0.9502,
+      "recall": 0.9628,
+      "f1": 0.9565,
+      "estimated_correct": 2563,
+      "total": 2677
+    },
+    "trend_summary": "The first-round trust-building rewrite reduces detection performance because such expressions may resemble normal customer-service conversations. After adding urgency and emotional manipulation, the fraud-related semantic signals become stronger, leading to improved detection performance."
+  },
+  "prompt_attack": {
+    "attack_type": "semantic-level prompt-based rewriting",
+    "remove_keywords": {
+      "strategy": "remove or replace high-risk fraud-related keywords",
+      "success_rate": 0.2183,
+      "success_rate_pct": "21.83%",
+      "avg_conf_drop": 0.14,
+      "avg_changes": 2.5,
+      "risk_level": "medium"
+    },
+    "naturalize": {
+      "strategy": "make the dialogue more natural and less suspicious",
+      "success_rate": 0.2671,
+      "success_rate_pct": "26.71%",
+      "avg_conf_drop": 0.11,
+      "avg_changes": 2.0,
+      "risk_level": "medium"
+    },
+    "negotiation_tone": {
+      "strategy": "rewrite the dialogue with a helpful and negotiable tone",
+      "success_rate": 0.3654,
+      "success_rate_pct": "36.54%",
+      "avg_conf_drop": 0.17,
+      "avg_changes": 1.6,
+      "risk_level": "high"
+    },
+    "multi_round": {
+      "strategy": "combine multiple prompt-based attack strategies",
+      "success_rate": 0.4162,
+      "success_rate_pct": "41.62%",
+      "avg_conf_drop": 0.19,
+      "avg_changes": 3.3,
+      "risk_level": "very high"
+    },
+    "trend_summary": "PromptAttack is more effective than TextFooler because it changes the semantic and pragmatic framing of the dialogue rather than only replacing individual words."
+  },
+  "comprehensive_comparison": [
+    {
+      "method": "BERT baseline",
+      "accuracy": 0.9187,
+      "accuracy_pct": "91.87%",
+      "f1": 0.9188,
+      "attack_success_rate": null,
+      "main_finding": "Strong baseline performance on original test data."
+    },
+    {
+      "method": "TextFooler attack",
+      "accuracy": null,
+      "f1": null,
+      "attack_success_rate": 0.0486,
+      "attack_success_rate_pct": "4.86%",
+      "main_finding": "Word-level attack has limited effect."
+    },
+    {
+      "method": "Fraud-R1 three-round rewriting",
+      "accuracy": 0.9574,
+      "accuracy_pct": "95.74%",
+      "f1": 0.9565,
+      "attack_success_rate": null,
+      "main_finding": "Multi-round social-engineering rewriting strengthens fraud detection signals."
+    },
+    {
+      "method": "PromptAttack remove keywords",
+      "accuracy": null,
+      "f1": null,
+      "attack_success_rate": 0.2183,
+      "attack_success_rate_pct": "21.83%",
+      "main_finding": "Keyword-level semantic attack is moderately effective."
+    },
+    {
+      "method": "PromptAttack naturalize",
+      "accuracy": null,
+      "f1": null,
+      "attack_success_rate": 0.2671,
+      "attack_success_rate_pct": "26.71%",
+      "main_finding": "Naturalized language reduces model alertness."
+    },
+    {
+      "method": "PromptAttack negotiation tone",
+      "accuracy": null,
+      "f1": null,
+      "attack_success_rate": 0.3654,
+      "attack_success_rate_pct": "36.54%",
+      "main_finding": "Changing the pragmatic tone poses a stronger threat."
+    },
+    {
+      "method": "PromptAttack multi-round",
+      "accuracy": null,
+      "f1": null,
+      "attack_success_rate": 0.4162,
+      "attack_success_rate_pct": "41.62%",
+      "main_finding": "Combined semantic attack is the strongest attack setting."
+    }
+  ],
+  "summary": {
+    "best_detection_method": {
+      "method": "Fraud-R1 three-round rewriting",
+      "accuracy": 0.9574,
+      "accuracy_pct": "95.74%",
+      "f1": 0.9565
+    },
+    "strongest_attack_method": {
+      "method": "PromptAttack multi-round",
+      "success_rate": 0.4162,
+      "success_rate_pct": "41.62%"
+    },
+    "main_findings": [
+      "BERT performs well on the original fraud-call detection task.",
+      "TextFooler has a low attack success rate, indicating that BERT is relatively robust to word-level synonym substitution.",
+      "Fraud-R1-style multi-round rewriting first weakens and then strengthens fraud detection performance.",
+      "PromptAttack is more threatening than TextFooler because it changes the semantic and pragmatic structure of the dialogue."
+    ]
+  }
+}
